@@ -18,28 +18,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:orientation="horizontal">
+            android:gravity="start"
+            android:orientation="vertical">
         <TextView
                 android:id="@+id/txt_epic_chance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="0.33"
-                android:text="Epic %: 0%"/>
+                android:text="Epic Chance: 0%"/>
         <TextView
                 android:id="@+id/txt_rare_chance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="0.33"
-                android:text="Rare %: 0%"/>
+                android:text="Rare Chance: 0%"/>
         <TextView
                 android:id="@+id/txt_common_chance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="0.33"
-                android:text="Common %: 0%"/>
+                android:text="Common Chance: 0%"/>
     </LinearLayout>
 
         <TextView
@@ -47,36 +42,104 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Epic Draw: "/>
+                android:text="Total Epic Draw: "/>
         <TextView
                 android:id="@+id/txt_add2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Rare Draw: "/>
+                android:text="Total Rare Draw: "/>
         <TextView
                 android:id="@+id/txt_add3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Common Draw: "/>
+                android:text="Total Common Draw: "/>
 
         <Button
                 android:id="@+id/btn_draw"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+        android:text="Number of Pulls:"/>
 
         <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
             <TextView
                     android:id="@+id/text_rolled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="value rolled "/>
+                    android:text="Value Rolled"/>
         </ScrollView>
 
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set Epic Rarity = "/>
+                <EditText
+                        android:id="@+id/rarity_epic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="5"
+                        android:inputType="numberDecimal"
+                        android:hint="Ex: 1"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set Rare Rarity = "/>
+                <EditText
+                        android:id="@+id/rarity_rare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="5"
+                        android:inputType="numberDecimal"
+                        android:hint="Ex: 10"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set Commom Rarity = "/>
+                <EditText
+                        android:id="@+id/rarity_common"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="5"
+                        android:inputType="numberDecimal"
+                        android:hint="Ex: 40"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"/>
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+                android:id="@+id/set_rarity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SET"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

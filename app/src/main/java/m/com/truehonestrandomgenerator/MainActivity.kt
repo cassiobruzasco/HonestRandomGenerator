@@ -1,8 +1,10 @@
 package m.com.truehonestrandomgenerator
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -11,7 +13,7 @@ import java.lang.Integer.sum
 
 class MainActivity : AppCompatActivity() {
 
-    private val btn by lazy { findViewById<Button>(R.id.btn_draw) }
+    private val btnRoll by lazy { findViewById<Button>(R.id.btn_draw) }
     private val epic by lazy { findViewById<TextView>(R.id.txt_add) }
     private val rare by lazy { findViewById<TextView>(R.id.txt_add2) }
     private val common by lazy { findViewById<TextView>(R.id.txt_add3) }
@@ -19,10 +21,12 @@ class MainActivity : AppCompatActivity() {
     private val epicChanceText by lazy { findViewById<TextView>(R.id.txt_epic_chance) }
     private val rareChanceText by lazy { findViewById<TextView>(R.id.txt_rare_chance) }
     private val commonChanceText by lazy { findViewById<TextView>(R.id.txt_common_chance) }
+    private val rarityEpicEdit by lazy { findViewById<EditText>(R.id.rarity_epic) }
+    private val rarityRareEdit by lazy { findViewById<EditText>(R.id.rarity_rare) }
+    private val rarityCommonEdit by lazy { findViewById<EditText>(R.id.rarity_common) }
+    private val btnSetRarity by lazy { findViewById<Button>(R.id.set_rarity) }
     private var totalDraw : Int = 0
-    private var epicChance: Float = 0f
-    private var rareChance: Float = 0f
-    private var commonChance: Float = 0f
+    private lateinit var randomGenerator: HonestRandomGenerator
 
     /**
      * UI updating code
@@ -32,18 +36,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        setChanceDraw()
+        val numberOfRolls = 5
+        val poolSize = 1000
+        val handicap = 1
+        randomGenerator = HonestRandomGenerator(HonestRandomGenerator.HONEST_MODE, numberOfRolls, poolSize, handicap)
+        setChanceTextDraw()
 
-        btn.text = "total draw: $totalDraw"
-        btn.setOnClickListener{view ->
-            totalDraw = sum(totalDraw, HonestRandomGenerator.numberOfDraws)
-            btn.text = "Summons used: $totalDraw"
-            resultText.text = HonestRandomGenerator.generateRandom(HonestRandomGenerator.HONEST_MODE)
+        btnRoll.text = "Number of pulls: $totalDraw"
+        btnRoll.setOnClickListener{
+            totalDraw = sum(totalDraw, numberOfRolls)
+            btnRoll.text = "Number of pulls: $totalDraw"
+            resultText.text = randomGenerator.generateRandom()
 
-            epic.text = "Epic Draw: ${HonestRandomGenerator.publicEpicCounter}"
-            rare.text = "Rare Draw: ${HonestRandomGenerator.publicRareCounter}"
-            common.text = "Common Draw: ${HonestRandomGenerator.publicCommonCounter}"
-            setChanceDraw()
+            epic.text = "Total Epic Draw: ${randomGenerator.finalEpicCounter}"
+            rare.text = "Total Rare Draw: ${randomGenerator.finalRareCounter}"
+            common.text = "Total Common Draw: ${randomGenerator.finalCommonCounter}"
+            setChanceTextDraw()
+        }
+
+        btnSetRarity.setOnClickListener {
+            randomGenerator.setRarityChance(HonestRandomGenerator.EPIC_RARITY, rarityEpicEdit.text.toString().toDouble())
+            randomGenerator.setRarityChance(HonestRandomGenerator.RARE_RARITY, rarityRareEdit.text.toString().toDouble())
+            randomGenerator.setRarityChance(HonestRandomGenerator.COMMON_RARITY, rarityCommonEdit.text.toString().toDouble())
+            setChanceTextDraw()
         }
     }
 
@@ -51,12 +66,12 @@ class MainActivity : AppCompatActivity() {
      * This is not part of Honest Random Generator logic
      * This only updates values at UI to show the numbers running.
      */
-    private fun setChanceDraw() {
-        epicChance = HonestRandomGenerator.epicDraw.last.toFloat() / HonestRandomGenerator.listEndRange.toFloat()
-        epicChanceText.text = "Epic %: ${epicChance}"
-        rareChance = HonestRandomGenerator.rareDraw.last.toFloat() / HonestRandomGenerator.listEndRange.toFloat()
-        rareChanceText.text = "Epic %: ${rareChance}"
-        commonChance = HonestRandomGenerator.commonDraw.last.toFloat() / HonestRandomGenerator.listEndRange.toFloat()
-        commonChanceText.text = "Epic %: ${commonChance}"
+    private fun setChanceTextDraw() {
+        epicChanceText.text = "Epic %: ${String.format("%.2f", randomGenerator.getCurrentRarityChance(HonestRandomGenerator.EPIC_RARITY)).toFloat()}"
+        rareChanceText.text = "Rare %: ${String.format("%.2f", randomGenerator.getCurrentRarityChance(HonestRandomGenerator.RARE_RARITY)).toFloat()}"
+        commonChanceText.text = "Common %: ${String.format("%.2f", randomGenerator.getCurrentRarityChance(HonestRandomGenerator.COMMON_RARITY)).toFloat()}"
+        rarityEpicEdit.setText(randomGenerator.getCurrentRarityChance(HonestRandomGenerator.EPIC_RARITY).toString())
+        rarityRareEdit.setText(randomGenerator.getCurrentRarityChance(HonestRandomGenerator.RARE_RARITY).toString())
+        rarityCommonEdit.setText(randomGenerator.getCurrentRarityChance(HonestRandomGenerator.COMMON_RARITY).toString())
     }
 }
